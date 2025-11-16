@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 
-function EditPatient() {
+function EditPatient({backendURL}) {
 
     //when the edit button is pressed on the patient page, send the patient information in a link to this page
     //extract the patient information and prepopulate the form 
@@ -12,17 +12,17 @@ function EditPatient() {
     const { patientId } = useParams()
 
     //TODO: set default values to actual patient values
-    const [ID, setID] = useState(1)
-    const [firstName, setFirstName] = useState("First name")
-    const [lastName, setLastName] = useState("Last name")
-    const [phoneNumber, setPhoneNumber] = useState("000-000-0000")
-    const [weight, setWeight] = useState("100")
+    const [ID, setID] = useState("")
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setLastName] = useState("")
+    const [phoneNumber, setPhoneNumber] = useState("")
+    const [weight, setWeight] = useState("")
     const [DOB, setDOB] = useState("")
 
     useEffect(() => {
         async function loadPatient() {
             try {
-                const response = await fetch(`/patients/${patientId}`)
+                const response = await fetch(`${backendURL}/patients/${patientId}`)
                 const data = await response.json()
                 setID(data.patientID)
                 setFirstName(data.firstName)
@@ -31,12 +31,12 @@ function EditPatient() {
                 setWeight(data.weight)
                 setDOB(data.dateOfBirth)
             } catch (err) {
-                console.log("Backend not ready, but page working");
+                console.log("Backend not ready, but page working", err);
             }
         }
 
         loadPatient()
-    }, [patientId])
+    }, [patientId, backendURL])
 
     async function handleCancel() {
         navigate("/Patients")
@@ -66,7 +66,7 @@ function EditPatient() {
                 <input type="date" value={DOB} onChange={(e) => setDOB(e.target.value)} />
 
                 <button type="submit">Save</button>
-                <button type="submit" onClick={handleCancel}>Cancel</button>
+                <button type="button" onClick={handleCancel}>Cancel</button>
             </form>
 
         </>

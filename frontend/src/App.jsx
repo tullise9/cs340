@@ -26,8 +26,8 @@ import EditPatient from './components/EditPatient';
 
 
 // Define the backend port and URL for API requests
-//const backendPort = ;  // Use the port you assigned to the backend server, this would normally go in a .env file
-//const backendURL = `http://classwork.engr.oregonstate.edu:${backendPort}`;
+const backendPort = 87261 ;  // Use the port you assigned to the backend server, this would normally go in a .env file
+const backendURL = `http://classwork.engr.oregonstate.edu:${backendPort}`;
 
 function App() {
   const navigate = useNavigate()
@@ -39,15 +39,15 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/Appointments" element={<Appointments />} />
         <Route path="/Patients" element={<Patients />} />
-        <Route path="/Nurses" element={<Nurses />} />
-        <Route path="/BloodOrders" element={<BloodOrders />} />
-        <Route path="/SpecialRequirements" element={<SpecialRequirements />} />
-        <Route path="/PatientsBloodRequirements" element={<PatientsBloodRequirements />} />
+        <Route path="/Nurses" element={<Nurses backendURL={backendURL}/>} />
+        <Route path="/BloodOrders" element={<BloodOrders backendURL={backendURL} />} />
+        <Route path="/SpecialRequirements" element={<SpecialRequirements backendURL={{backendURL}}/>} />
+        <Route path="/PatientsBloodRequirements" element={<PatientsBloodRequirements backendURL={backendURL} />} />
         <Route path="/appointments/new" element={<ChoosePatient backendURL={backendURL} onSelect={(id) => navigate(`/appointments/new/${id}`)} />} />
-        <Route path="/appointments/new/:patientId" element={<CreateAppointment />} />
-        <Route path="/requirements/new" element={<AddSpecialRequirement />} />
-        <Route path="bloodorder/new" element={<CreateBloodOrder />} />
-        <Route path="/EditPatient" element={<EditPatient />} />
+        <Route path="/appointments/new/:patientId" element={<CreateAppointment backendURL={backendURL} />} />
+        <Route path="/requirements/new:patientId" element={<AddSpecialRequirement backendURL={backendURL}/>} />
+        <Route path="/bloodorder/new" element={<CreateBloodOrder />} />
+        <Route path="/EditPatient/:patientId" element={<EditPatient backendURL={backendURL} />} />
 
 
 

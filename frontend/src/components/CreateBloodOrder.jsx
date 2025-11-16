@@ -1,56 +1,81 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
-function CreateBloodOrder() {
-    //for when user cancels form transaction
+function CreateBloodOrder({ backendURL }) {
     const navigate = useNavigate()
 
-    const [patientId, setPatientId] = useState({ name: "Sample Patient" })
+    const [patientId, setPatientId] = useState("")
     const [dateTime, setDateTime] = useState("")
     const [volume, setVolume] = useState("")
+    const [patients, setPatients] = useState([])
 
-    //save appointment data to database, not hooked 
+    useEffect(() => {
+        async function loadPatients() {
+            try {
+                const response = await fetch(`${backendURL}/patients`)
+                const data = await response.json()
+                setPatients(data)
+            } catch (err) {
+                console.log("Error loading patient list", err)
+            }
+        }
+
+        loadPatients()
+    }, [backendURL])
+
     async function handleSubmit(e) {
         e.preventDefault()
 
         try {
-            await fetch("/BloodOrders", {
+            await fetch(`${backendURL}/orders`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     patientId,
                     volume,
                     dateTime
-                }),
+                })
             })
 
-            console.log("Saved to backend!");
+            console.log("Blood order saved")
+            navigate("/BloodOrders")
         } catch (err) {
-            console.log("Backend offline — blood order not saved, but UI works.");
+            console.log("Backend offline — UI still works", err)
         }
     }
 
-    // go back to appointments page on cancel
-    async function handleCancel() {
+    function handleCancel() {
         navigate("/BloodOrders")
     }
-
 
     return (
         <>
             <h1>Create Blood Order Form</h1>
+
             <form onSubmit={handleSubmit}>
                 <label>Patient:</label>
-                <select value={patientId} onChange={(e) => setPatientId(e.target.value)} >
+                <select value={patientId} onChange={(e) => setPatientId(e.target.value)}>
                     <option value="">Select</option>
-                    {/*TODO: load patient names from database, map values to patientIds*/}
+                    {patients.map(p => (
+                        <option key={p.patientID} value={p.patientID}>
+                            {p.firstName} {p.lastName}
+                        </option>
+                    ))}
                 </select>
 
                 <label>Date and Time:</label>
-                <input type="datetime-local" value={dateTime} onChange={(e) => setDateTime(e.target.value)} />
+                <input
+                    type="datetime-local"
+                    value={dateTime}
+                    onChange={(e) => setDateTime(e.target.value)}
+                />
 
-                <label>Volume:</label>
-                <input type="number" value={volume} onChange={(e) => setVolume(e.target.value)} />
+                <label>Volume (mL):</label>
+                <input
+                    type="number"
+                    value={volume}
+                    onChange={(e) => setVolume(e.target.value)}
+                />
 
                 <button type="submit">Save</button>
                 <button type="button" onClick={handleCancel}>Cancel</button>
@@ -58,6 +83,5 @@ function CreateBloodOrder() {
         </>
     )
 }
-
 
 export default CreateBloodOrder

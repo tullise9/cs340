@@ -1,29 +1,81 @@
 import ChoosePatient from "../components/ChoosePatient"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
+import TableRow from "../components/tableRow"
 
-function PatientsBloodRquirements() {
+function PatientsBloodRquirements({backendURL}) {
     const [chosenPatient, setChosenPatient] = useState('')
+    const [requirements, setRequirements] = useState([])
+
+    useEffect(() => {
+        async function loadRequirements() {
+            if (!chosenPatient) return;
+
+            try {
+                const response = await fetch(`${backendURL}/requirements/${chosenPatient}`)
+                const data = await response.json()
+                setRequirements(data)
+            } catch (err) {
+                console.error("Error loading requirements:", err)
+            }
+        }
+
+        loadRequirements()
+    }, [chosenPatient, backendURL])
+
+    async function handleDelete(requirementID) {
+        try {
+            await fetch(`${backendURL}/requirements/${chosenPatient}/${requirementID}`, {
+                method: "DELETE",
+            })
+
+            // update UI without reload
+            setRequirements(requirements.filter(r => r.requirementID !== requirementID))
+        } catch (err) {
+            console.error("Error deleting requirement:", err)
+        }
+    }
 
     return (
         <>
             <h1>Patients Blood Requirements Page</h1>
             <div className="homepageDescription">
-                <p>The blood requirements for the selected patient will be displayed as a form where requirements</p>
-                <p>can be deleted or new requirements added</p>
-                <p>NOTE: DELETE button will be displayed at the end of each table row</p>
             </div>
             {!chosenPatient && (
-                <ChoosePatient onSelect={(id) => setChosenPatient(id)} />
+                <ChoosePatient backendURL={backendURL} onSelect={(id) => setChosenPatient(id)} />
             )}
 
             {chosenPatient && (
                 <>
-                    <div>A table of the patient's blood requirements will be displayed here</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Requirement ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
 
-                    {/*TODO: change the URL so it gives the patient ID AddSpecialRequirement */}
-                    <Link to="/requirements/new"> Add Special Requirement</Link>
+                        <tbody>
+                            {requirements.map(req => (
+                                <tr key={req.requirementID}>
+                                        columns={[
+                                            req.requirementID,
+                                            req.requirementName,
+                                            req.requirementDescription
+                                        ]}
+                                    <td>
+                                        <button onClick={() => handleDelete(req.requirementID)}>Delete</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
 
+                    <Link to={`/requirements/new/${chosenPatient}`}>
+                        Add Special Requirement
+                    </Link>
                 </>
             )}
         </>

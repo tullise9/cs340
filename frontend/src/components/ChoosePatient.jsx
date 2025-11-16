@@ -3,7 +3,7 @@
 // Copied from /OR/ Adapted from /OR/ Based on: CS 290 module 4 "function and functional programming"
 
 import { useState, useEffect } from "react"
-function ChoosePatient({ onSelect }) {
+function ChoosePatient({ backendURL, onSelect }) {
     const [selectedPatient, setSelectedPatient] = useState("")
     const [patients, setPatients] = useState([])
 
@@ -33,7 +33,6 @@ function ChoosePatient({ onSelect }) {
 
     return (
         <>
-            <h1>Choose Patient Form</h1>
             <p>Select a patient to continue</p>
 
             <form onSubmit={handleSubmit}>

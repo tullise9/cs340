@@ -33,7 +33,7 @@ function CreateAppointment({backendURL}) {
                 const data = await response.json()
                 setPatient(data)
             } catch (err) {
-                console.log("Failed to fetch patient data")
+                console.log("Failed to fetch patient data", err)
             }
      }
 
@@ -73,14 +73,14 @@ function CreateAppointment({backendURL}) {
                     dateTime,
                     isConfirmed,
                     orderID,
-                    nurseName
+                    nurseID
                 }),
             })
 
             console.log("Saved to backend!")
             navigate("/Appointments")
         } catch (err) {
-            console.log("Backend offline — appointment not saved, but UI works.");
+            console.log("Backend offline — appointment not saved, but UI works.", err);
         }
     }
 

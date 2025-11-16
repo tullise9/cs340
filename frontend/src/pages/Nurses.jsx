@@ -1,10 +1,59 @@
-function Nurses() {
+import { useState, useEffect } from "react"
+import TableRow from "../components/tableRow"
+import { Link } from "react-router-dom"
+
+function Nurses({ backendURL }) {
+    const [nurses, setNurses] = useState([])
+
+    useEffect(() => {
+        async function loadNurses() {
+            try {
+                const response = await fetch(`${backendURL}/nurses`)
+                const data = await response.json()
+                setNurses(data)
+            } catch (err) {
+                console.error("Error loading nurses:", err)
+            }
+        }
+
+        loadNurses()
+    }, [backendURL])
+
     return (
         <>
-            <h1>Nurses page</h1>
+            <h1>Nurses</h1>
             <div className="homepageDescription">
-                <p>Will display a table of nurse information.</p>
+                <p>This page displays all nurses available for appointment scheduling</p>
             </div>
+
+            <Link to="/nurse/new">
+                <button>New Nurse</button>
+            </Link>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nurse ID</th>
+                        <th>Name</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {nurses.map(n => (
+                        <TableRow
+                            key={n.nurseID}
+                            columns={[
+                                n.nurseID,
+                                n.nurseName,
+                                n.phoneNumber
+                            ]}
+                        />
+                    ))}
+                </tbody>
+            </table>
         </>
     )
-} export default Nurses;
+}
+
+export default Nurses

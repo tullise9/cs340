@@ -1,10 +1,59 @@
-function SpecialRequirements() {
+import { useState, useEffect } from "react"
+import TableRow from "../components/tableRow"
+import { Link } from "react-router-dom"
+
+function SpecialRequirements({ backendURL }) {
+    const [requirements, setRequirements] = useState([])
+
+    useEffect(() => {
+        async function loadRequirements() {
+            try {
+                const response = await fetch(`${backendURL}/requirements`)
+                const data = await response.json()
+                setRequirements(data)
+            } catch (err) {
+                console.error("Error loading requirements:", err)
+            }
+        }
+
+        loadRequirements()
+    }, [backendURL])
+
     return (
         <>
-            <h1>Special Requirements page</h1>
+            <h1>Special Requirements</h1>
             <div className="homepageDescription">
-                <p>Will display a table of special requirements and descriptions.</p>
+                <p>This page displays all available blood special requirements</p>
             </div>
+
+            <Link to="/requirements/new">
+                <button>New Special Requirement</button>
+            </Link>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Requirement ID</th>
+                        <th>Name</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {requirements.map(r => (
+                        <TableRow
+                            key={r.requirementID}
+                            columns={[
+                                r.requirementID,
+                                r.requirementName,
+                                r.requirementDescription
+                            ]}
+                        />
+                    ))}
+                </tbody>
+            </table>
         </>
     )
-} export default SpecialRequirements;
+}
+
+export default SpecialRequirements
