@@ -43,7 +43,7 @@ function App() {
         <Route path="/BloodOrders" element={<BloodOrders />} />
         <Route path="/SpecialRequirements" element={<SpecialRequirements />} />
         <Route path="/PatientsBloodRequirements" element={<PatientsBloodRequirements />} />
-        <Route path="/appointments/new" element={<ChoosePatient onSelect={(id) => navigate(`/appointments/new/${id}`)} />} />
+        <Route path="/appointments/new" element={<ChoosePatient backendURL={backendURL} onSelect={(id) => navigate(`/appointments/new/${id}`)} />} />
         <Route path="/appointments/new/:patientId" element={<CreateAppointment />} />
         <Route path="/requirements/new" element={<AddSpecialRequirement />} />
         <Route path="bloodorder/new" element={<CreateBloodOrder />} />

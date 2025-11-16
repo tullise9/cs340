@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom";
 
-function CreateAppointment() {
+function CreateAppointment({backendURL}) {
 
     //for when user cancels form transaction
     const navigate = useNavigate()
@@ -10,36 +10,62 @@ function CreateAppointment() {
     //extract patient ID from link /appointements/new/:patientID
     const { patientId } = useParams();
 
-    const [patient, setPatient] = useState({ name: "Sample Patient" })
+    const [patient, setPatient] = useState("")
     const [dateTime, setDateTime] = useState("")
     const [orderID, setOrderID] = useState("")
-    const [nurseName, setNurseName] = useState("")
+    const [nurseID, setNurseID] = useState("")
     const [isConfirmed, setIsConfirmed] = useState(0)
+
+    // for loading dropdown values
+    const [orders, setOrders] = useState([])
+    const [nurses, setNurses] = useState([])
 
     //fetch patient data to use for loading values in dropdown menus
     useEffect(() => {
-        async function loadPatient() {
+        loadPatient()
+        loadOrders()
+        loadNurses()
+    }, [patientId, backendURL]);
+
+     async function loadPatient() {
             try {
-                const response = await fetch(`/patients/${patientId}`)
+                const response = await fetch(`${backendURL}/patients/${patientId}`)
                 const data = await response.json()
                 setPatient(data)
             } catch (err) {
-                console.log("Backend not ready, using dummy patient")
-                setPatient({
-                    name: "Test Patient #" + patientId
-                })
+                console.log("Failed to fetch patient data")
             }
-        }
+     }
 
-        loadPatient();
-    }, [patientId]);
+     async function loadOrders() {
+        try {
+            const response = await fetch(`${backendURL}/orders/${patientId}`)
+            const data = await response.json()
+            setOrders(data)
+        } catch (err) {
+            console.log("Error loading orders", err)
+        }
+    }
+
+
+    async function loadNurses() {
+        try {
+            const response = await fetch(`${backendURL}/nurses`)
+            const data = await response.json()
+            setNurses(data);
+        } catch (err) {
+            console.log("Error loading nurses", err)
+        }
+    }
+
+
 
     //save appointment data to database, not hooked 
     async function handleSubmit(e) {
         e.preventDefault()
 
         try {
-            await fetch("/appointments", {
+            await fetch(`${backendURL}/appointments`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -51,7 +77,8 @@ function CreateAppointment() {
                 }),
             })
 
-            console.log("Saved to backend!");
+            console.log("Saved to backend!")
+            navigate("/Appointments")
         } catch (err) {
             console.log("Backend offline — appointment not saved, but UI works.");
         }
@@ -81,13 +108,23 @@ function CreateAppointment() {
                 <label>orderID:</label>
                 <select value={orderID} onChange={(e) => setOrderID(e.target.value)} >
                     <option value="">Select</option>
-                    {/*TODO: map the orderID values for patients to dropdown options */}
+                    {/*map order IDs for selected patient to dropdown options */}
+                    {orders.map(order => (
+                        <option key={order.orderID} value={order.orderID}>
+                            {order.orderID}
+                        </option>
+                    ))}
                 </select>
 
                 <label>Nurse:</label>
-                <select value={nurseName} onChange={(e) => setNurseName(e.target.value)} >
+                <select value={nurseID} onChange={(e) => setNurseID(e.target.value)} >
                     <option value="">Select</option>
-                    {/*TODO: load nurse names from the database*/}
+                    {/* load nurse names from the database */}
+                    {nurses.map(n => (
+                        <option key={n.nurseID} value={n.nurseID}>
+                            {n.nurseName}
+                        </option>
+                    ))}
                 </select>
 
                 <button type="submit">Save</button>
