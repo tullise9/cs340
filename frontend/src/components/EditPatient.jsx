@@ -1,17 +1,12 @@
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
 
-function EditPatient({backendURL}) {
-
-    //when the edit button is pressed on the patient page, send the patient information in a link to this page
-    //extract the patient information and prepopulate the form 
-    //save the patient information to the database 
+function EditPatient({ backendURL }) {
 
     const navigate = useNavigate()
     const { patientId } = useParams()
 
-    //TODO: set default values to actual patient values
     const [ID, setID] = useState("")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -31,22 +26,45 @@ function EditPatient({backendURL}) {
                 setWeight(data.weight)
                 setDOB(data.dateOfBirth)
             } catch (err) {
-                console.log("Backend not ready, but page working", err);
+                console.log("Backend not ready, but page working", err)
             }
         }
 
         loadPatient()
     }, [patientId, backendURL])
 
-    async function handleCancel() {
-        navigate("/Patients")
+    async function handleSubmit(e) {
+        e.preventDefault()
+
+        try {
+            await fetch(`${backendURL}/patients/${patientId}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    patientID: ID,     
+                    firstName,
+                    lastName,
+                    phoneNumber,
+                    weight,
+                    dateOfBirth: DOB
+                })
+            })
+
+            console.log("Patient updated successfully")
+            navigate("/Patients")
+        } catch (err) {
+            console.log("Error updating patient", err)
+        }
     }
 
+    function handleCancel() {
+        navigate("/Patients")
+    }
 
     return (
         <>
             <h1>Edit Patient Form</h1>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label>Patient ID:</label>
                 <input value={ID} onChange={(e) => setID(e.target.value)} />
 
@@ -68,10 +86,8 @@ function EditPatient({backendURL}) {
                 <button type="submit">Save</button>
                 <button type="button" onClick={handleCancel}>Cancel</button>
             </form>
-
         </>
-    );
+    )
 }
-
 
 export default EditPatient

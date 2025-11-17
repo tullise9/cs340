@@ -20,7 +20,7 @@ function ChoosePatient({ backendURL, onSelect }) {
         }
         console.log("Backend is not set up yet")
         fetchPatients()
-    }, [])
+    }, [backendURL])
 
 
     const handleSubmit = (e) => {
