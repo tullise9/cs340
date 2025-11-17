@@ -24,18 +24,11 @@ const PORT = YOUR_BACKEND_PORT;
 // ########## ROUTE HANDLERS
 
 // READ ROUTES
-app.get('/bsg-people', async (req, res) => {
+app.get('/patients', async (req, res) => {
     try {
-        // Create and execute our queries
-        // In query1, we use a JOIN clause to display the names of the homeworlds
-        const query1 = `SELECT bsg_people.id, bsg_people.fname, bsg_people.lname, \
-            bsg_planets.name AS 'homeworld', bsg_people.age FROM bsg_people \
-            LEFT JOIN bsg_planets ON bsg_people.homeworld = bsg_planets.id;`;
-        const query2 = 'SELECT * FROM bsg_planets;';
-        const [people] = await db.query(query1);
-        const [homeworlds] = await db.query(query2);
+        // TODO: SQL to load all patients
 
-        res.status(200).json({ people, homeworlds });  // Send the results to the frontend
+        res.status(200).json([]);  // TODO: add actual data returned
 
     } catch (error) {
         console.error("Error executing queries:", error);
@@ -44,6 +37,114 @@ app.get('/bsg-people', async (req, res) => {
     }
 
 });
+
+app.get('/patients/:patientId', async (req, res) => {
+    const {patientId} = req.params
+    try {
+        // TODO: SQL to load one patient
+
+        res.status(200).json([]);  // TODO: add actual data returned
+
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        // Send a generic error message to the browser
+        res.status(500).send("An error occurred while executing the database queries.");
+    }
+
+});
+
+app.get('/appointments', async (req, res) => {
+    try {
+        // TODO: SQL to load appointments
+
+        res.status(200).json([]);  // TODO: add actual data returned
+
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        // Send a generic error message to the browser
+        res.status(500).send("An error occurred while executing the database queries.");
+    }
+
+});
+
+app.get('/BloodOrders', async (req, res) => {
+    try {
+        // TODO: SQL to load all blood orders
+
+        res.status(200).json([]);  // TODO: add actual data returned
+
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        // Send a generic error message to the browser
+        res.status(500).send("An error occurred while executing the database queries.");
+    }
+
+});
+
+app.get('/nurses', async (req, res) => {
+    try {
+        // TODO: SQL to load all nurses
+
+        res.status(200).json([]);  // TODO: add actual data returned
+
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        // Send a generic error message to the browser
+        res.status(500).send("An error occurred while executing the database queries.");
+    }
+
+});
+
+app.get('/requirements', async (req, res) => {
+    try {
+        // TODO: SQL to load all special requirements
+
+        res.status(200).json([]);  // TODO: add actual data returned
+
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        // Send a generic error message to the browser
+        res.status(500).send("An error occurred while executing the database queries.");
+    }
+
+});
+
+app.get('/requirements/:patientId', async (req, res) => {
+    const {patientId} = req.params
+    try {
+        // TODO: SQL to load requirements for one patient
+
+        res.status(200).json([]);  // TODO: add actual data returned
+
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        // Send a generic error message to the browser
+        res.status(500).send("An error occurred while executing the database queries.");
+    }
+
+});
+
+
+app.get('/requirements/:patientId:requirementId', async (req, res) => {
+    const {patientId, requirementId} = req.params
+
+    try {
+        // TODO: SQL to delete from the intersection table
+
+        res.status(200).json({message: "requirement deleted"});  
+
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        // Send a generic error message to the browser
+        res.status(500).send("An error occurred while executing the database queries.");
+    }
+
+});
+
+
+
+
+
 
 // ########################################
 // ########## LISTENER
