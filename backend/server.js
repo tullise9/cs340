@@ -141,6 +141,21 @@ app.get('/requirements/:patientId:requirementId', async (req, res) => {
 
 });
 
+// for RESET button
+
+app.post('/reset', async (req, res) => {
+    try {
+        // TODO: SQL to RESET tables to original sample data
+
+        res.status(200).json({message: "requirement deleted"});  
+
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        // Send a generic error message to the browser
+        res.status(500).send("Failed to reset database");
+    }
+
+});
 
 
 

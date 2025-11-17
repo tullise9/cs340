@@ -36,7 +36,7 @@ function App() {
     <>
       <Navigation />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home backendURL={backendURL} />} />
         <Route path="/Appointments" element={<Appointments />} />
         <Route path="/Patients" element={<Patients />} />
         <Route path="/Nurses" element={<Nurses backendURL={backendURL}/>} />
