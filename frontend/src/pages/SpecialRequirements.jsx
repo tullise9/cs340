@@ -25,11 +25,6 @@ function SpecialRequirements({ backendURL }) {
             <div className="homepageDescription">
                 <p>This page displays all available blood special requirements</p>
             </div>
-
-            <Link to="/requirements/new">
-                <button>New Special Requirement</button>
-            </Link>
-
             <table>
                 <thead>
                     <tr>
