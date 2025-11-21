@@ -45,108 +45,173 @@ app.get('/patients', async (req, res) => {
     }
 });
 
-// app.get('/patients/:patientId', async (req, res) => {
-//     const { patientId } = req.params
-//     try {
-//         // TODO: SQL to load one patient
+app.get('/patients/:patientId', async (req, res) => {
+    const { patientId } = req.params;
 
-//         res.status(200).json([]);  // TODO: add actual data returned
+    try {
+        const [rows] = await db.query(
+            `
+            SELECT 
+                patientID,
+                firstName,
+                lastName,
+                phoneNumber,
+                weight,
+                dateOfBirth
+            FROM Patients
+            WHERE patientID = ?;
+            `,
+            [patientId]
+        );
 
-//     } catch (error) {
-//         console.error("Error executing queries:", error);
-//         // Send a generic error message to the browser
-//         res.status(500).send("An error occurred while executing the database queries.");
-//     }
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "Patient not found" });
+        }
 
-// });
+        res.status(200).json(rows[0]); // return single object, not an array
+    } catch (error) {
+        console.error("Error executing queries:", error);
+        res.status(500).send("An error occurred while executing the database queries.");
+    }
+});
 
-// app.get('/appointments', async (req, res) => {
-//     try {
-//         // TODO: SQL to load appointments
+app.get('/appointments', async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                A.appointmentID,
+                A.appointmentDateTime,
+                A.isConfirmed,
+                A.patientID,
+                P.firstName,
+                P.lastName,
+                A.orderID,
+                N.nurseName
+            FROM Appointments A
+            JOIN Patients P ON A.patientID = P.patientID
+            LEFT JOIN Nurses N ON A.nurseID = N.nurseID
+            ORDER BY A.appointmentDateTime;
+        `);
 
-//         res.status(200).json([]);  // TODO: add actual data returned
+        res.status(200).json(rows);
 
-//     } catch (error) {
-//         console.error("Error executing queries:", error);
-//         // Send a generic error message to the browser
-//         res.status(500).send("An error occurred while executing the database queries.");
-//     }
+    } catch (error) {
+        console.error("Error fetching appointments:", error);
+        res.status(500).send("An error occurred while retrieving appointments.");
+    }
+});
 
-// });
+app.get('/orders', async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                B.orderID,
+                B.volume,
+                B.orderDateTime,
+                B.isLinkedToAppointment,
+                B.patientID,
+                P.firstName,
+                P.lastName
+            FROM Blood_orders B
+            LEFT JOIN Patients P ON B.patientID = P.patientID
+            ORDER BY B.orderDateTime DESC;
+        `);
 
-// app.get('/BloodOrders', async (req, res) => {
-//     try {
-//         // TODO: SQL to load all blood orders
+        res.status(200).json(rows);
 
-//         res.status(200).json([]);  // TODO: add actual data returned
-
-//     } catch (error) {
-//         console.error("Error executing queries:", error);
-//         // Send a generic error message to the browser
-//         res.status(500).send("An error occurred while executing the database queries.");
-//     }
-
-// });
-
-// app.get('/nurses', async (req, res) => {
-//     try {
-//         // TODO: SQL to load all nurses
-
-//         res.status(200).json([]);  // TODO: add actual data returned
-
-//     } catch (error) {
-//         console.error("Error executing queries:", error);
-//         // Send a generic error message to the browser
-//         res.status(500).send("An error occurred while executing the database queries.");
-//     }
-
-// });
-
-// app.get('/requirements', async (req, res) => {
-//     try {
-//         // TODO: SQL to load all special requirements
-
-//         res.status(200).json([]);  // TODO: add actual data returned
-
-//     } catch (error) {
-//         console.error("Error executing queries:", error);
-//         // Send a generic error message to the browser
-//         res.status(500).send("An error occurred while executing the database queries.");
-//     }
-
-// });
-
-// app.get('/requirements/:patientId', async (req, res) => {
-//     const { patientId } = req.params
-//     try {
-//         // TODO: SQL to load requirements for one patient
-
-//         res.status(200).json([]);  // TODO: add actual data returned
-
-//     } catch (error) {
-//         console.error("Error executing queries:", error);
-//         // Send a generic error message to the browser
-//         res.status(500).send("An error occurred while executing the database queries.");
-//     }
-
-// });
+    } catch (error) {
+        console.error("Error loading blood orders:", error);
+        res.status(500).send("An error occurred while loading blood orders.");
+    }
+});
 
 
-// app.get('/requirements/:patientId:requirementId', async (req, res) => {
-//     const { patientId, requirementId } = req.params
 
-//     try {
-//         // TODO: SQL to delete from the intersection table
 
-//         res.status(200).json({ message: "requirement deleted" });
+app.get('/nurses', async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                nurseID,
+                nurseName,
+                phoneNumber
+            FROM Nurses;
+        `);
 
-//     } catch (error) {
-//         console.error("Error executing queries:", error);
-//         // Send a generic error message to the browser
-//         res.status(500).send("An error occurred while executing the database queries.");
-//     }
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error("Error loading nurses:", error);
+        res.status(500).send("An error occurred while loading nurses.");
+    }
+});
 
-// });
+
+
+app.get('/requirements', async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                requirementID,
+                requirementName,
+                requirementDetails AS requirementDescription
+            FROM Special_requirements;
+        `);
+
+        res.status(200).json(rows);
+
+    } catch (error) {
+        console.error("Error loading requirements:", error);
+        res.status(500).send("An error occurred while loading special requirements.");
+    }
+});
+
+
+
+app.get('/requirements/:patientId', async (req, res) => {
+    const { patientId } = req.params;
+
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                pr.requirementID,
+                sr.requirementName,
+                sr.requirementDetails AS requirementDescription,
+                p.firstName,
+                p.lastName
+            FROM Patients_requirements pr
+            JOIN Special_requirements sr ON pr.requirementID = sr.requirementID
+            JOIN Patients p ON pr.patientID = p.patientID
+            WHERE pr.patientID = ?;
+        `, [patientId]);
+
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error("Error loading patient requirements:", error);
+        res.status(500).send("An error occurred while loading patient requirements.");
+    }
+});
+
+
+
+
+
+app.delete('/requirements/:patientId/:requirementId', async (req, res) => {
+    const { patientId, requirementId } = req.params;
+
+    try {
+        await db.query(`
+            DELETE FROM Patients_requirements
+            WHERE patientID = ? AND requirementID = ?;
+        `, [patientId, requirementId]);
+
+        res.status(200).json({ message: "Requirement removed successfully" });
+    } catch (error) {
+        console.error("Error deleting requirement:", error);
+        res.status(500).send("An error occurred while deleting the requirement.");
+    }
+});
+
+
 
 // // for RESET button
 
