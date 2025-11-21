@@ -37,7 +37,7 @@ function BloodOrders({ backendURL }) {
                         <th>Volume</th>
                         <th>Order Date/Time</th>
                         <th>Linked to Appointment?</th>
-                        <th>Patient ID</th>
+                        <th>Patient</th>
                     </tr>
                 </thead>
 
@@ -48,9 +48,15 @@ function BloodOrders({ backendURL }) {
                             columns={[
                                 order.orderID,
                                 `${order.volume} mL`,
-                                order.orderDateTime,
+                                new Date(order.orderDateTime).toLocaleString("en-US", {
+                                    month: "short",
+                                    day: "numeric",
+                                    year: "numeric",
+                                    hour: "numeric",
+                                    minute: "2-digit"
+                                }),
                                 order.isLinkedToAppointment ? "Yes" : "No",
-                                order.patientID
+                                `${order.firstName} ${order.lastName}`
                             ]}
                         />
                     ))}
@@ -61,3 +67,4 @@ function BloodOrders({ backendURL }) {
 }
 
 export default BloodOrders
+

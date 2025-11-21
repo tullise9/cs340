@@ -48,7 +48,7 @@ function Appointments({ backendURL }) {
                             key={appt.appointmentID}
                             columns={[
                                 appt.appointmentID,
-                                appt.appointmentDateTime,
+                                new Date(appt.appointmentDateTime).toLocaleString(),
                                 appt.isConfirmed ? "Yes" : "No",
                                 appt.patientID,
                                 appt.firstName,

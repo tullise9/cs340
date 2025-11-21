@@ -24,7 +24,9 @@ function EditPatient({ backendURL }) {
                 setLastName(data.lastName)
                 setPhoneNumber(data.phoneNumber)
                 setWeight(data.weight)
-                setDOB(data.dateOfBirth)
+                const formattedDOB = new Date(data.dateOfBirth).toISOString().split("T")[0]
+                setDOB(formattedDOB)
+
             } catch (err) {
                 console.log("Backend not ready, but page working", err)
             }
@@ -41,7 +43,7 @@ function EditPatient({ backendURL }) {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    patientID: ID,     
+                    patientID: ID,
                     firstName,
                     lastName,
                     phoneNumber,
