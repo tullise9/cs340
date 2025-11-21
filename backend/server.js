@@ -214,20 +214,18 @@ app.delete('/requirements/:patientId/:requirementId', async (req, res) => {
 
 
 // // for RESET button
+// RESET DATABASE ROUTE
+app.post('/reset', async (req, res) => {
+    try {
+        await db.query("CALL sp_reset_database();");
+        console.log("Database reset successfully!");
+        res.status(200).json({ message: "Database reset successfully" });
+    } catch (error) {
+        console.error("Error resetting database:", error);
+        res.status(500).json({ message: "Failed to reset database" });
+    }
+});
 
-// app.post('/reset', async (req, res) => {
-//     try {
-//         // TODO: SQL to RESET tables to original sample data
-
-//         res.status(200).json({ message: "requirement deleted" });
-
-//     } catch (error) {
-//         console.error("Error executing queries:", error);
-//         // Send a generic error message to the browser
-//         res.status(500).send("Failed to reset database");
-//     }
-
-// });
 
 
 
