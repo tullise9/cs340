@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react";
-import TableRow from "../components/tableRow";
+import TableRow from "../components/TableRow";
 
-function Appointments({backendURL}) {
+function Appointments({ backendURL }) {
     const [appointments, setAppointments] = useState([])
 
     useEffect(() => {
@@ -18,7 +18,7 @@ function Appointments({backendURL}) {
 
         loadAppointments()
     }, [backendURL])
-    
+
     return (
         <>
             <h1>Appointments page</h1>
@@ -43,7 +43,7 @@ function Appointments({backendURL}) {
                 </thead>
 
                 <tbody>
-                   {appointments.map((appt) => (
+                    {appointments.map((appt) => (
                         <TableRow
                             key={appt.appointmentID}
                             columns={[
@@ -52,7 +52,7 @@ function Appointments({backendURL}) {
                                 appt.isConfirmed ? "Yes" : "No",
                                 appt.patientID,
                                 appt.firstName,
-                                appt.lastName,  
+                                appt.lastName,
                                 appt.orderID,
                                 appt.nurseName
                             ]}

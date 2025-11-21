@@ -26,7 +26,7 @@ import EditPatient from './components/EditPatient';
 
 
 // Define the backend port and URL for API requests
-const backendPort = 87261 ;  // Use the port you assigned to the backend server, this would normally go in a .env file
+const backendPort = 6391;  // Use the port you assigned to the backend server, this would normally go in a .env file
 const backendURL = `http://classwork.engr.oregonstate.edu:${backendPort}`;
 
 function App() {
@@ -37,15 +37,15 @@ function App() {
       <Navigation />
       <Routes>
         <Route path="/" element={<Home backendURL={backendURL} />} />
-        <Route path="/Appointments" element={<Appointments />} />
-        <Route path="/Patients" element={<Patients />} />
-        <Route path="/Nurses" element={<Nurses backendURL={backendURL}/>} />
+        <Route path="/Appointments" element={<Appointments backendURL={backendURL} />} />
+        <Route path="/Patients" element={<Patients backendURL={backendURL} />} />
+        <Route path="/Nurses" element={<Nurses backendURL={backendURL} />} />
         <Route path="/BloodOrders" element={<BloodOrders backendURL={backendURL} />} />
-        <Route path="/SpecialRequirements" element={<SpecialRequirements backendURL={{backendURL}}/>} />
+        <Route path="/SpecialRequirements" element={<SpecialRequirements backendURL={{ backendURL }} />} />
         <Route path="/PatientsBloodRequirements" element={<PatientsBloodRequirements backendURL={backendURL} />} />
         <Route path="/appointments/new" element={<ChoosePatient backendURL={backendURL} onSelect={(id) => navigate(`/appointments/new/${id}`)} />} />
         <Route path="/appointments/new/:patientId" element={<CreateAppointment backendURL={backendURL} />} />
-        <Route path="/requirements/new:patientId" element={<AddSpecialRequirement backendURL={backendURL}/>} />
+        <Route path="/requirements/new:patientId" element={<AddSpecialRequirement backendURL={backendURL} />} />
         <Route path="/bloodorder/new" element={<CreateBloodOrder />} />
         <Route path="/EditPatient/:patientId" element={<EditPatient backendURL={backendURL} />} />
 

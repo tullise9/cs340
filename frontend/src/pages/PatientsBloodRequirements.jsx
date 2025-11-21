@@ -1,9 +1,9 @@
 import ChoosePatient from "../components/ChoosePatient"
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
-import TableRow from "../components/tableRow"
+import TableRow from "../components/TableRow"
 
-function PatientsBloodRquirements({backendURL}) {
+function PatientsBloodRquirements({ backendURL }) {
     const [chosenPatient, setChosenPatient] = useState('')
     const [requirements, setRequirements] = useState([])
 
@@ -60,11 +60,11 @@ function PatientsBloodRquirements({backendURL}) {
                         <tbody>
                             {requirements.map(req => (
                                 <tr key={req.requirementID}>
-                                        columns={[
-                                            req.requirementID,
-                                            req.requirementName,
-                                            req.requirementDescription
-                                        ]}
+                                    columns={[
+                                        req.requirementID,
+                                        req.requirementName,
+                                        req.requirementDescription
+                                    ]}
                                     <td>
                                         <button onClick={() => handleDelete(req.requirementID)}>Delete</button>
                                     </td>

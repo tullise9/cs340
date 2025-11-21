@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import TableRow from "../components/tableRow"
+import TableRow from "../components/TableRow"
 import { Link } from "react-router-dom"
 
 function BloodOrders({ backendURL }) {
