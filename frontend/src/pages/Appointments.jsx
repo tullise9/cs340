@@ -21,13 +21,14 @@ function Appointments({ backendURL }) {
 
     return (
         <>
-            <h1>Appointments page</h1>
+            
             <div className="homepageDescription">
             </div>
             <button>
-                <Link to="/appointments/new"> New Appointment</Link>
+                <Link to="/appointments/new" className="bb-btn"> New Appointment</Link>
             </button>
-
+        <div class="table-container">
+            <h1>Appointments</h1>
             <table>
                 <thead>
                     <tr>
@@ -60,6 +61,7 @@ function Appointments({ backendURL }) {
                     ))}
                 </tbody>
             </table>
+        </div>
 
         </>
     )

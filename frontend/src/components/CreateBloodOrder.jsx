@@ -50,8 +50,9 @@ function CreateBloodOrder({ backendURL }) {
 
     return (
         <>
+        <div class="form-container">
             <h1>Create Blood Order Form</h1>
-
+            
             <form onSubmit={handleSubmit}>
                 <label>Patient:</label>
                 <select value={patientId} onChange={(e) => setPatientId(e.target.value)}>
@@ -80,6 +81,7 @@ function CreateBloodOrder({ backendURL }) {
                 <button type="submit">Save</button>
                 <button type="button" onClick={handleCancel}>Cancel</button>
             </form>
+        </div>
         </>
     )
 }

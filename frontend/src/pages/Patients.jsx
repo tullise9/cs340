@@ -22,7 +22,8 @@ function Patients({ backendURL }) {
 
     return (
         <>
-            <h1>Patients page</h1>
+        <div class="table-container">
+            <h1>Patients</h1>
 
             <table>
                 <thead>
@@ -54,6 +55,7 @@ function Patients({ backendURL }) {
                     ))}
                 </tbody>
             </table>
+            </div>
         </>
     );
 }

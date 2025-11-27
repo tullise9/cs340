@@ -21,6 +21,7 @@ function BloodOrders({ backendURL }) {
 
     return (
         <>
+        <div class="table-container">
             <h1>Blood Orders</h1>
             <div className="homepageDescription">
                 <p>This page displays all blood orders associated with patients</p>
@@ -62,6 +63,7 @@ function BloodOrders({ backendURL }) {
                     ))}
                 </tbody>
             </table>
+            </div>
         </>
     )
 }

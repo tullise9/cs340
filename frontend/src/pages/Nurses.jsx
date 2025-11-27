@@ -21,9 +21,9 @@ function Nurses({ backendURL }) {
 
     return (
         <>
+        <div class="table-container">
             <h1>Nurses</h1>
             <div className="homepageDescription">
-                <p>This page displays all nurses available for appointment scheduling</p>
             </div>
 
             <Link to="/nurse/new">
@@ -52,6 +52,7 @@ function Nurses({ backendURL }) {
                     ))}
                 </tbody>
             </table>
+            </div>
         </>
     )
 }

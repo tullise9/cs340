@@ -45,6 +45,7 @@ function PatientsBloodRequirements({ backendURL }) {
 
             {chosenPatient && requirements.length > 0 && (
                 <>
+                <div class="table-container">
                     <h2>
                         Special Blood Requirements for {requirements[0].firstName} {requirements[0].lastName}
                     </h2>
@@ -75,6 +76,7 @@ function PatientsBloodRequirements({ backendURL }) {
                             ))}
                         </tbody>
                     </table>
+                    </div>
 
                     <Link to={`/requirements/new/${chosenPatient}`}>
                         New Requirement

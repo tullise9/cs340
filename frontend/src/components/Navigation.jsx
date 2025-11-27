@@ -1,7 +1,6 @@
 function Navigation() {
     return (
         <nav>
-            Navigation:
             <a href="/">Home  </a>
             <a href="/Appointments">Appointments  </a>
             <a href="/Patients">Patients  </a>
