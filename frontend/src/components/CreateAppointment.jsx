@@ -79,8 +79,9 @@ function CreateAppointment({ backendURL }) {
 
   return (
     <>
-      <h1>Create Appointment Form</h1>
-      <p>Patient: {patient.firstName + " " + patient.lastName}</p>
+     <div class="form-container">
+      <h1>New Appointment Form</h1>
+      <h3>Patient: {patient.firstName + " " + patient.lastName}</h3>
 
       <form onSubmit={handleSubmit}>
         <label>Date and Time:</label>
@@ -112,6 +113,7 @@ function CreateAppointment({ backendURL }) {
         <button type="submit">Save</button>
         <button type="button" onClick={handleCancel}>Cancel</button>
       </form>
+      </div>
     </>
   )
 }

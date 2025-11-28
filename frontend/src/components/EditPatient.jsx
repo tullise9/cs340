@@ -65,7 +65,8 @@ function EditPatient({ backendURL }) {
 
     return (
         <>
-            <h1>Edit Patient Form</h1>
+         <div class="form-container">
+            <h1>Edit Patient </h1>
             <form onSubmit={handleSubmit}>
                 <label>Patient ID:</label>
                 <input value={ID} onChange={(e) => setID(e.target.value)} />
@@ -88,6 +89,7 @@ function EditPatient({ backendURL }) {
                 <button type="submit">Save</button>
                 <button type="button" onClick={handleCancel}>Cancel</button>
             </form>
+            </div>
         </>
     )
 }

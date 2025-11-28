@@ -22,14 +22,12 @@ function Nurses({ backendURL }) {
     return (
         <>
         <div class="table-container">
+
             <h1>Nurses</h1>
             <div className="homepageDescription">
             </div>
 
-            <Link to="/nurse/new">
-                <button>New Nurse</button>
-            </Link>
-
+        <div className="table-wrapper">
             <table>
                 <thead>
                     <tr>
@@ -52,6 +50,7 @@ function Nurses({ backendURL }) {
                     ))}
                 </tbody>
             </table>
+            </div>
             </div>
         </>
     )

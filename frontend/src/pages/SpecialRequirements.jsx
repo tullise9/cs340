@@ -24,8 +24,9 @@ function SpecialRequirements({ backendURL }) {
         <div class="table-container">
             <h1>Special Requirements</h1>
             <div className="homepageDescription">
-                <p>This page displays all available blood special requirements</p>
             </div>
+
+            <div className="table-wrapper">
             <table>
                 <thead>
                     <tr>
@@ -48,6 +49,7 @@ function SpecialRequirements({ backendURL }) {
                     ))}
                 </tbody>
             </table>
+            </div>
             </div>
         </>
     )

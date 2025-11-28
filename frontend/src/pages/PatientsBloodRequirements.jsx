@@ -37,7 +37,7 @@ function PatientsBloodRequirements({ backendURL }) {
 
     return (
         <>
-            <h1>Patients Blood Requirements Page</h1>
+            <h1>Patients Blood Requirements</h1>
 
             {!chosenPatient && (
                 <ChoosePatient backendURL={backendURL} onSelect={setChosenPatient} />
@@ -46,10 +46,14 @@ function PatientsBloodRequirements({ backendURL }) {
             {chosenPatient && requirements.length > 0 && (
                 <>
                 <div class="table-container">
-                    <h2>
-                        Special Blood Requirements for {requirements[0].firstName} {requirements[0].lastName}
+                    <Link to={`/requirements/new/${chosenPatient}`} className="bb-btn">
+                        New Requirement
+                    </Link>
+                    <h2 className="table-title">
+                        {requirements[0].firstName} {requirements[0].lastName}
                     </h2>
-
+                    <div className="table-wrapper">
+                        
                     <table>
                         <thead>
                             <tr>
@@ -77,10 +81,7 @@ function PatientsBloodRequirements({ backendURL }) {
                         </tbody>
                     </table>
                     </div>
-
-                    <Link to={`/requirements/new/${chosenPatient}`}>
-                        New Requirement
-                    </Link>
+                    </div>
                 </>
             )}
         </>

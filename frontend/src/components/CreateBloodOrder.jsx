@@ -51,7 +51,7 @@ function CreateBloodOrder({ backendURL }) {
     return (
         <>
         <div class="form-container">
-            <h1>Create Blood Order Form</h1>
+            <h1>Blood Order Form</h1>
             
             <form onSubmit={handleSubmit}>
                 <label>Patient:</label>

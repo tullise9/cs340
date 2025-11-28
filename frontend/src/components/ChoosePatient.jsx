@@ -33,17 +33,20 @@ function ChoosePatient({ backendURL, onSelect }) {
 
     return (
         <>
-            <p>Select a patient to continue</p>
+        <div class="form-container">
+            <h2>Select a patient to continue</h2>
 
             <form onSubmit={handleSubmit}>
                 <select value={selectedPatient} onChange={(e) => setSelectedPatient(e.target.value)}>
-                    <option value="">Choose a patient</option>
+                    <option value="">--Select--</option>
                     {patients.map((p) => (
                         <option key={p.patientID} value={p.patientID}> {p.firstName} {p.lastName} </option>
                     ))}
                 </select>
                 <button type="submit">Continue</button>
             </form>
+
+            </div>
         </>
     )
 }

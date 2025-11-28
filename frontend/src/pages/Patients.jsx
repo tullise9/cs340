@@ -25,6 +25,7 @@ function Patients({ backendURL }) {
         <div class="table-container">
             <h1>Patients</h1>
 
+            <div className="table-wrapper">
             <table>
                 <thead>
                     <tr>
@@ -55,6 +56,7 @@ function Patients({ backendURL }) {
                     ))}
                 </tbody>
             </table>
+            </div>
             </div>
         </>
     );

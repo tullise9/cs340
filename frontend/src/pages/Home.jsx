@@ -20,7 +20,7 @@ function Home({ backendURL }) {   // <-- must destructure props
         <>
             <h1>Home page</h1>
             <div className="homepageDescription">
-                <button onClick={handleReset}>RESET DATABASE</button>
+                <button onClick={handleReset} className="bb-btn">RESET DATABASE</button>
             </div>
         </>
     );
