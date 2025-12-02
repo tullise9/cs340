@@ -25,7 +25,7 @@ function Appointments({ backendURL }) {
             <div className="homepageDescription">
             </div>
             
-        <div class="table-container">
+        <div className="table-container">
                 <Link to="/appointments/new" className="bb-btn"> New Appointment</Link>
     
             <h1>Appointments</h1>

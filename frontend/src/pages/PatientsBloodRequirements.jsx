@@ -45,7 +45,7 @@ function PatientsBloodRequirements({ backendURL }) {
 
             {chosenPatient && requirements.length > 0 && (
                 <>
-                <div class="table-container">
+                <div className="table-container">
                     <Link to={`/requirements/new/${chosenPatient}`} className="bb-btn">
                         New Requirement
                     </Link>
@@ -66,19 +66,19 @@ function PatientsBloodRequirements({ backendURL }) {
 
                         <tbody>
                             {requirements.map(req => (
-                                <TableRow
-                                    key={req.requirementID}
-                                    columns={[
-                                        req.requirementID,
-                                        req.requirementName,
-                                        req.requirementDescription,
-                                        <button onClick={() => handleDelete(req.requirementID)}>
-                                            Delete
-                                        </button>
-                                    ]}
-                                />
-                            ))}
+                                <tr key={req.requirementID}>
+                                <td>{req.requirementID}</td>
+                                <td>{req.requirementName}</td>
+                                <td>{req.requirementDescription}</td>
+                                <td>
+                            <button onClick={() => handleDelete(req.requirementID)}>
+                                Delete
+                            </button>
+                                 </td>
+                            </tr>
+                        ))}
                         </tbody>
+
                     </table>
                     </div>
                     </div>

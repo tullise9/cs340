@@ -27,7 +27,8 @@ import EditPatient from './components/EditPatient';
 
 // Define the backend port and URL for API requests
 const backendPort = 6391;  // Use the port you assigned to the backend server, this would normally go in a .env file
-const backendURL = `http://classwork.engr.oregonstate.edu:${backendPort}`;
+const backendURL = `http://localhost:${backendPort}`;
+//const backendURL = `http://classwork.engr.oregonstate.edu:${backendPort}`;
 
 function App() {
   const navigate = useNavigate()
@@ -46,8 +47,8 @@ function App() {
         <Route path="/appointments/new" element={<ChoosePatient backendURL={backendURL} onSelect={(id) => navigate(`/appointments/new/${id}`)} />} />
         <Route path="/appointments/new/:patientId" element={<CreateAppointment backendURL={backendURL} />} />
         <Route path="/requirements/new:patientId" element={<AddSpecialRequirement backendURL={backendURL} />} />
-        <Route path="/bloodorder/new" element={<CreateBloodOrder />} />
-        <Route path="/EditPatient/:patientId" element={<EditPatient backendURL={backendURL} />} />
+        <Route path="/bloodorder/new" element={<CreateBloodOrder backendURL={backendURL} />} />
+        <Route path="/editPatient/:patientId" element={<EditPatient backendURL={backendURL} />} />
 
 
 

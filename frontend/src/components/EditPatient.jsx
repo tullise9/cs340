@@ -37,6 +37,7 @@ function EditPatient({ backendURL }) {
 
     async function handleSubmit(e) {
         e.preventDefault()
+        console.log("PUT URL: ", `${backendURL}/patients/${patientId}`)
 
         try {
             await fetch(`${backendURL}/patients/${patientId}`, {
@@ -65,7 +66,7 @@ function EditPatient({ backendURL }) {
 
     return (
         <>
-         <div class="form-container">
+         <div className="form-container">
             <h1>Edit Patient </h1>
             <form onSubmit={handleSubmit}>
                 <label>Patient ID:</label>

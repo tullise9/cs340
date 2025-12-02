@@ -26,18 +26,9 @@ const PORT = 6391;
 // READ ROUTES
 app.get('/patients', async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT 
-                patientID,
-                firstName,
-                lastName,
-                phoneNumber,
-                weight,
-                dateOfBirth
-            FROM Patients;
-        `);
+        const [rows] = await db.query("CALL sp_get_patients()");
 
-        res.status(200).json(rows);
+        res.status(200).json(rows[0]);
 
     } catch (error) {
         console.error("Error executing queries:", error);
@@ -49,26 +40,13 @@ app.get('/patients/:patientId', async (req, res) => {
     const { patientId } = req.params;
 
     try {
-        const [rows] = await db.query(
-            `
-            SELECT 
-                patientID,
-                firstName,
-                lastName,
-                phoneNumber,
-                weight,
-                dateOfBirth
-            FROM Patients
-            WHERE patientID = ?;
-            `,
-            [patientId]
-        );
+        const [rows] = await db.query("CALL sp_get_patient_by_id(?)", [patientId]);
 
         if (rows.length === 0) {
             return res.status(404).json({ message: "Patient not found" });
         }
 
-        res.status(200).json(rows[0]); // return single object, not an array
+        res.status(200).json(rows[0][0]); // return single object, not an array
     } catch (error) {
         console.error("Error executing queries:", error);
         res.status(500).send("An error occurred while executing the database queries.");
@@ -77,23 +55,9 @@ app.get('/patients/:patientId', async (req, res) => {
 
 app.get('/appointments', async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT 
-                A.appointmentID,
-                A.appointmentDateTime,
-                A.isConfirmed,
-                A.patientID,
-                P.firstName,
-                P.lastName,
-                A.orderID,
-                N.nurseName
-            FROM Appointments A
-            JOIN Patients P ON A.patientID = P.patientID
-            LEFT JOIN Nurses N ON A.nurseID = N.nurseID
-            ORDER BY A.appointmentDateTime;
-        `);
+        const [rows] = await db.query("CALL sp_get_appointments()");
 
-        res.status(200).json(rows);
+        res.status(200).json(rows[0]);
 
     } catch (error) {
         console.error("Error fetching appointments:", error);
@@ -103,21 +67,9 @@ app.get('/appointments', async (req, res) => {
 
 app.get('/orders', async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT 
-                B.orderID,
-                B.volume,
-                B.orderDateTime,
-                B.isLinkedToAppointment,
-                B.patientID,
-                P.firstName,
-                P.lastName
-            FROM Blood_orders B
-            LEFT JOIN Patients P ON B.patientID = P.patientID
-            ORDER BY B.orderDateTime DESC;
-        `);
+        const [rows] = await db.query("CALL sp_get_orders()");
 
-        res.status(200).json(rows);
+        res.status(200).json(rows[0]);
 
     } catch (error) {
         console.error("Error loading blood orders:", error);
@@ -130,15 +82,9 @@ app.get('/orders', async (req, res) => {
 
 app.get('/nurses', async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT 
-                nurseID,
-                nurseName,
-                phoneNumber
-            FROM Nurses;
-        `);
+        const [rows] = await db.query("CALL sp_get_nurses()");
 
-        res.status(200).json(rows);
+        res.status(200).json(rows[0]);
     } catch (error) {
         console.error("Error loading nurses:", error);
         res.status(500).send("An error occurred while loading nurses.");
@@ -149,15 +95,9 @@ app.get('/nurses', async (req, res) => {
 
 app.get('/requirements', async (req, res) => {
     try {
-        const [rows] = await db.query(`
-            SELECT 
-                requirementID,
-                requirementName,
-                requirementDetails AS requirementDescription
-            FROM Special_requirements;
-        `);
+        const [rows] = await db.query("CALL sp_get_requirements");
 
-        res.status(200).json(rows);
+        res.status(200).json(rows[0]);
 
     } catch (error) {
         console.error("Error loading requirements:", error);
@@ -171,38 +111,80 @@ app.get('/requirements/:patientId', async (req, res) => {
     const { patientId } = req.params;
 
     try {
-        const [rows] = await db.query(`
-            SELECT 
-                pr.requirementID,
-                sr.requirementName,
-                sr.requirementDetails AS requirementDescription,
-                p.firstName,
-                p.lastName
-            FROM Patients_requirements pr
-            JOIN Special_requirements sr ON pr.requirementID = sr.requirementID
-            JOIN Patients p ON pr.patientID = p.patientID
-            WHERE pr.patientID = ?;
-        `, [patientId]);
+        const [rows] = await db.query("CALL sp_get_requirements_by_patient(?)", [patientId]);
 
-        res.status(200).json(rows);
+        console.log("REQ BY PATIENT RESULT -->", rows);
+
+        res.status(200).json(rows[0]);
     } catch (error) {
         console.error("Error loading patient requirements:", error);
-        res.status(500).send("An error occurred while loading patient requirements.");
+        res.status(500).json({ error: "Failed to load patient requirements" });
+    }
+});
+
+
+// UPDATE ROUTES
+app.put('/patients/:patientId', async (req, res) => {
+
+    const { patientId } = req.params;
+    const { patientID, firstName, lastName, phoneNumber, weight, dateOfBirth } = req.body;
+
+    console.log("PUT endpoint reached", patientId);
+
+
+    try {
+        await db.query(
+            "CALL sp_update_patient(?, ?, ?, ?, ?, ?, ?)",
+            [
+                patientId,      // old ID
+                patientID,      // new ID
+                firstName,
+                lastName,
+                phoneNumber,
+                weight,
+                dateOfBirth
+            ]
+        );
+
+        res.status(200).json({ message: "Patient updated successfully" });
+    } catch (error) {
+        console.error("Error updating patient:", error);
+        res.status(500).send("An error occurred while updating the patient.");
+    }
+});
+
+
+// CREATE ROUTES 
+app.post('/orders', async (req, res) => {
+    const { patientId, volume, dateTime } = req.body;
+
+    console.log("POST /orders received:", req.body);
+
+    try {
+        await db.query(
+            "CALL sp_create_blood_order(?, ?, ?)",
+            [patientId, volume, dateTime]
+        );
+
+        res.status(201).json({ message: "Blood order successfully created" });
+    } catch (error) {
+        console.error("Error creating blood order:", error);
+        res.status(500).send("An error occurred while creating the blood order.");
     }
 });
 
 
 
 
-
+// DELETE ROUTES
 app.delete('/requirements/:patientId/:requirementId', async (req, res) => {
     const { patientId, requirementId } = req.params;
 
     try {
-        await db.query(`
-            DELETE FROM Patients_requirements
-            WHERE patientID = ? AND requirementID = ?;
-        `, [patientId, requirementId]);
+        await db.query("CALL sp_delete_requirement(?, ?)", [
+            patientId,
+            requirementId
+        ]);
 
         res.status(200).json({ message: "Requirement removed successfully" });
     } catch (error) {

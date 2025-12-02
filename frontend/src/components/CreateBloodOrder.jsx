@@ -14,6 +14,7 @@ function CreateBloodOrder({ backendURL }) {
             try {
                 const response = await fetch(`${backendURL}/patients`)
                 const data = await response.json()
+                console.log("Loaded patients:", data)
                 setPatients(data)
             } catch (err) {
                 console.log("Error loading patient list", err)
@@ -50,7 +51,7 @@ function CreateBloodOrder({ backendURL }) {
 
     return (
         <>
-        <div class="form-container">
+        <div className="form-container">
             <h1>Blood Order Form</h1>
             
             <form onSubmit={handleSubmit}>

@@ -33,7 +33,7 @@ function ChoosePatient({ backendURL, onSelect }) {
 
     return (
         <>
-        <div class="form-container">
+        <div className="form-container">
             <h2>Select a patient to continue</h2>
 
             <form onSubmit={handleSubmit}>

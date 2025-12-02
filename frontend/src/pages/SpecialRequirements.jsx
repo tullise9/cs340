@@ -21,7 +21,7 @@ function SpecialRequirements({ backendURL }) {
 
     return (
         <>
-        <div class="table-container">
+        <div className="table-container">
             <h1>Special Requirements</h1>
             <div className="homepageDescription">
             </div>

@@ -21,7 +21,7 @@ function BloodOrders({ backendURL }) {
 
     return (
         <>
-        <div class="table-container">
+        <div className="table-container">
 
             <Link to="/bloodorder/new" className="bb-btn">
                 New Blood Order

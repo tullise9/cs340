@@ -22,7 +22,7 @@ function Patients({ backendURL }) {
 
     return (
         <>
-        <div class="table-container">
+        <div className="table-container">
             <h1>Patients</h1>
 
             <div className="table-wrapper">
