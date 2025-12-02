@@ -1,10 +1,11 @@
 import ChoosePatient from "../components/ChoosePatient"
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import TableRow from "../components/TableRow"
+import { Link, useParams } from "react-router-dom"
 
 function PatientsBloodRequirements({ backendURL }) {
-    const [chosenPatient, setChosenPatient] = useState('')
+    const { patientId } = useParams()  
+
+    const [chosenPatient, setChosenPatient] = useState(patientId || "")
     const [requirements, setRequirements] = useState([])
 
     useEffect(() => {
@@ -22,6 +23,13 @@ function PatientsBloodRequirements({ backendURL }) {
 
         loadRequirements()
     }, [chosenPatient, backendURL])
+
+    useEffect(() => {
+
+        if (patientId) {
+            setChosenPatient(patientId)
+        }
+    }, [patientId])
 
     async function handleDelete(requirementID) {
         try {
@@ -49,11 +57,12 @@ function PatientsBloodRequirements({ backendURL }) {
                     <Link to={`/requirements/new/${chosenPatient}`} className="bb-btn">
                         New Requirement
                     </Link>
+
                     <h2 className="table-title">
                         {requirements[0].firstName} {requirements[0].lastName}
                     </h2>
+
                     <div className="table-wrapper">
-                        
                     <table>
                         <thead>
                             <tr>
@@ -67,26 +76,35 @@ function PatientsBloodRequirements({ backendURL }) {
                         <tbody>
                             {requirements.map(req => (
                                 <tr key={req.requirementID}>
-                                <td>{req.requirementID}</td>
-                                <td>{req.requirementName}</td>
-                                <td>{req.requirementDescription}</td>
-                                <td>
-                            <button onClick={() => handleDelete(req.requirementID)}>
-                                Delete
-                            </button>
-                                 </td>
-                            </tr>
-                        ))}
+                                    <td>{req.requirementID}</td>
+                                    <td>{req.requirementName}</td>
+                                    <td>{req.requirementDescription}</td>
+                                    <td>
+                                        <button onClick={() => handleDelete(req.requirementID)}>
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
-
                     </table>
                     </div>
-                    </div>
+                </div>
                 </>
+            )}
+
+            {chosenPatient && requirements.length === 0 && (
+                <div className="table-container">
+                    <Link to={`/requirements/new/${chosenPatient}`} className="bb-btn">
+                        New Requirement
+                    </Link>
+                    <h2>No special requirements found for this patient.</h2>
+                </div>
             )}
         </>
     )
 }
 
 export default PatientsBloodRequirements
+
 

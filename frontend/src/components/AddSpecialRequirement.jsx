@@ -5,10 +5,21 @@ function AddSpecialRequirement({ backendURL }) {
     const { patientId } = useParams()
     const navigate = useNavigate()
 
+    const [patient, setPatient] = useState({})
     const [requirementId, setRequirementId] = useState("")
     const [requirements, setRequirements] = useState([])
 
     useEffect(() => {
+        async function loadPatient() {
+            try {
+                const response = await fetch(`${backendURL}/patients/${patientId}`)
+                const data = await response.json()
+                setPatient(data)
+            } catch (err) {
+                console.log("Error loading patient data:", err)
+            }
+        }
+
         async function loadRequirements() {
             try {
                 const response = await fetch(`${backendURL}/requirements`)
@@ -19,24 +30,25 @@ function AddSpecialRequirement({ backendURL }) {
             }
         }
 
+        loadPatient()
         loadRequirements()
-    }, [backendURL])
+    }, [patientId, backendURL])
 
     async function handleSubmit(e) {
         e.preventDefault()
 
         try {
-            await fetch(`${backendURL}/patientRequirements`, {
+            await fetch(`${backendURL}/requirements/${patientId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    patientId: Number(patientId),
-                    requirementId: Number(requirementId)
-                })
-            })
+                requirementID: Number(requirementId)
+             })
+        })
 
-            console.log("Requirement added.")
-            navigate("/PatientsBloodRequirements")
+
+            navigate(`/PatientsBloodRequirements/${patientId}`)
+
         } catch (err) {
             console.log("Backend offline — UI still works.", err)
         }
@@ -48,25 +60,30 @@ function AddSpecialRequirement({ backendURL }) {
 
     return (
         <>
-            <h1>Add Special Requirement Form</h1>
-            <form onSubmit={handleSubmit}>
-                <label>Select Requirement:</label>
-                <select
-                    value={requirementId}
-                    onChange={(e) => setRequirementId(e.target.value)}
-                >
-                    <option value="">Choose requirement</option>
-                    {requirements.map((r) => (
-                        <option key={r.requirementID} value={r.requirementID}>
-                            {r.requirementName} — {r.requirementDescription}
-                        </option>
-                    ))}
-                </select>
-                <button type="submit">Save</button>
-                <button type="button" onClick={handleCancel}>Cancel</button>
-            </form>
+            <div className="form-container">
+                <h2>Add Special Requirement </h2>
+
+                <form onSubmit={handleSubmit}>
+                    <label>Patient: {patient.firstName} {patient.lastName}</label>
+                    <select
+                        value={requirementId}
+                        onChange={(e) => setRequirementId(e.target.value)}
+                    >
+                        <option value="">--Select--</option>
+                        {requirements.map((r) => (
+                            <option key={r.requirementID} value={r.requirementID}>
+                                {r.requirementName} — {r.requirementDescription}
+                            </option>
+                        ))}
+                    </select>
+
+                    <button type="submit">Save</button>
+                    <button type="button" onClick={handleCancel}>Cancel</button>
+                </form>
+            </div>
         </>
-    );
+    )
 }
 
-export default AddSpecialRequirement;
+export default AddSpecialRequirement
+

@@ -49,6 +49,10 @@ function App() {
         <Route path="/requirements/new:patientId" element={<AddSpecialRequirement backendURL={backendURL} />} />
         <Route path="/bloodorder/new" element={<CreateBloodOrder backendURL={backendURL} />} />
         <Route path="/editPatient/:patientId" element={<EditPatient backendURL={backendURL} />} />
+        <Route path="/requirements/new/:patientId" element={<AddSpecialRequirement backendURL={backendURL} />} />
+        <Route path="/PatientsBloodRequirements/:patientId" element={<PatientsBloodRequirements backendURL={backendURL} />} />
+
+
 
 
 

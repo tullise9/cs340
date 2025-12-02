@@ -95,7 +95,7 @@ app.get('/nurses', async (req, res) => {
 
 app.get('/requirements', async (req, res) => {
     try {
-        const [rows] = await db.query("CALL sp_get_requirements");
+        const [rows] = await db.query("CALL sp_get_requirements()");
 
         res.status(200).json(rows[0]);
 
@@ -119,6 +119,19 @@ app.get('/requirements/:patientId', async (req, res) => {
     } catch (error) {
         console.error("Error loading patient requirements:", error);
         res.status(500).json({ error: "Failed to load patient requirements" });
+    }
+});
+
+
+app.get('/orders/available/:patientId', async (req, res) => {
+    const { patientId } = req.params;
+
+    try {
+        const [rows] = await db.query("CALL sp_get_available_orders(?)", [patientId]);
+        res.status(200).json(rows[0]);
+    } catch (error) {
+        console.error("Error loading available orders:", error);
+        res.status(500).send("Failed to load available orders");
     }
 });
 
@@ -170,6 +183,43 @@ app.post('/orders', async (req, res) => {
     } catch (error) {
         console.error("Error creating blood order:", error);
         res.status(500).send("An error occurred while creating the blood order.");
+    }
+});
+
+app.post('/appointments', async (req, res) => {
+    const { patientId, dateTime, isConfirmed, orderID, nurseID } = req.body;
+
+    console.log("POST /appointments received:", req.body);
+
+    try {
+        await db.query(
+            "CALL sp_create_appointment(?, ?, ?, ?, ?)",
+            [patientId, dateTime, isConfirmed, orderID, nurseID]
+        );
+
+        res.status(201).json({ message: "Appointment created successfully" });
+    } catch (error) {
+        console.error("Error creating appointment:", error);
+        res.status(500).send("An error occurred while creating the appointment.");
+    }
+});
+
+app.post('/requirements/:patientId', async (req, res) => {
+    const { patientId } = req.params;
+    const { requirementID } = req.body;
+
+    console.log("POST /requirements/:patientId received:", patientId, requirementID);
+
+    try {
+        await db.query("CALL sp_add_requirement_to_patient(?, ?)", [
+            patientId,
+            requirementID
+        ]);
+
+        res.status(201).json({ message: "Requirement added successfully" });
+    } catch (error) {
+        console.error("Error adding requirement:", error);
+        res.status(500).send("An error occurred while adding the requirement.");
     }
 });
 

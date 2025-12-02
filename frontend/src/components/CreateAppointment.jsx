@@ -26,13 +26,13 @@ function CreateAppointment({ backendURL }) {
       }
     }
 
-    async function loadOrders() {
+    async function loadAvailableOrders() {
       try {
-        const response = await fetch(`${backendURL}/orders/${patientId}`)
+        const response = await fetch(`${backendURL}/orders/available/${patientId}`)
         const data = await response.json()
         setOrders(data)
       } catch (err) {
-        console.log("Error loading orders", err)
+        console.log("Error loading available orders", err)
       }
     }
 
@@ -47,7 +47,7 @@ function CreateAppointment({ backendURL }) {
     }
 
     loadPatient()
-    loadOrders()
+    loadAvailableOrders()
     loadNurses()
   }, [patientId, backendURL])
 
@@ -66,10 +66,10 @@ function CreateAppointment({ backendURL }) {
         })
       })
 
-      console.log("Saved to backend!")
+      console.log("Saved appointment to backend!")
       navigate("/Appointments")
     } catch (err) {
-      console.log("Backend offline — appointment not saved, but UI works.", err)
+      console.log("Error saving appointment.", err)
     }
   }
 
@@ -79,40 +79,45 @@ function CreateAppointment({ backendURL }) {
 
   return (
     <>
-     <div class="form-container">
-      <h1>New Appointment Form</h1>
-      <h3>Patient: {patient.firstName + " " + patient.lastName}</h3>
+      <div className="form-container">
+        <h1>New Appointment Form</h1>
+        <h3>Patient: {patient.firstName} {patient.lastName}</h3>
 
-      <form onSubmit={handleSubmit}>
-        <label>Date and Time:</label>
-        <input type="datetime-local" value={dateTime} onChange={(e) => setDateTime(e.target.value)} />
+        <form onSubmit={handleSubmit}>
+          <label>Date and Time:</label>
+          <input type="datetime-local" value={dateTime} onChange={(e) => setDateTime(e.target.value)} />
 
-        <label>Is appointment confirmed?</label>
-        <select value={isConfirmed} onChange={(e) => setIsConfirmed(Number(e.target.value))}>
-          <option value="">Select</option>
-          <option value={1}>Yes</option>
-          <option value={0}>No</option>
-        </select>
+          <label>Is appointment confirmed?</label>
+          <select value={isConfirmed} onChange={(e) => setIsConfirmed(Number(e.target.value))}>
+            <option value="">Select</option>
+            <option value={1}>Yes</option>
+            <option value={0}>No</option>
+          </select>
 
-        <label>Order ID:</label>
-        <select value={orderID} onChange={(e) => setOrderID(e.target.value)}>
-          <option value="">Select</option>
-          {orders.map(order => (
-            <option key={order.orderID} value={order.orderID}>{order.orderID}</option>
-          ))}
-        </select>
+          <label>Order:</label>
+          <select value={orderID} onChange={(e) => setOrderID(e.target.value)}>
+            <option value="">Select</option>
+            {orders.length === 0 && (
+              <option disabled>No available orders</option>
+            )}
+            {orders.map(order => (
+              <option key={order.orderID} value={order.orderID}>
+                {order.orderID} — {order.volume} mL
+              </option>
+            ))}
+          </select>
 
-        <label>Nurse:</label>
-        <select value={nurseID} onChange={(e) => setNurseID(e.target.value)}>
-          <option value="">Select</option>
-          {nurses.map(n => (
-            <option key={n.nurseID} value={n.nurseID}>{n.nurseName}</option>
-          ))}
-        </select>
+          <label>Nurse:</label>
+          <select value={nurseID} onChange={(e) => setNurseID(e.target.value)}>
+            <option value="">Select</option>
+            {nurses.map(n => (
+              <option key={n.nurseID} value={n.nurseID}>{n.nurseName}</option>
+            ))}
+          </select>
 
-        <button type="submit">Save</button>
-        <button type="button" onClick={handleCancel}>Cancel</button>
-      </form>
+          <button type="submit">Save</button>
+          <button type="button" onClick={handleCancel}>Cancel</button>
+        </form>
       </div>
     </>
   )
