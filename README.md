@@ -62,6 +62,20 @@ Based on materials from OSU coursework.
 
 ---
 
+### PL/SQL Assitance (AI Tools)
+**Date:** 12/02/2025  
+AI assistance was used to generate RESET database stored procedure.  
+
+**Prompts used:**  
+- Write me a stored procedure to reset my database, I am using mySQL. 
+- Make sure the IDs return back to the originals. Here is the schema (copied and pasted image of schema).
+
+**AI Source URL:**  
+[https://chatgpt.com/share/6931e383-6644-800d-a54f-31795f83fe3c](https://chatgpt.com/share/693334b3-3fec-800d-85d2-039778da11b8
+
+---
+
+
 ### CSS Styling Assistance (AI Tools)  
 **Date:** 12/02/2025  
 AI assistance was used to generate and refine CSS for forms, tables, and theme color styling.  
