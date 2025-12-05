@@ -37,7 +37,7 @@ A **RESET** route allows the database to be wiped and repopulated with sample da
 ### Frontend
 - React (Vite)
 - React Router
-- CSS (custom styling)
+- CSS 
 
 ### Backend
 - Node.js
