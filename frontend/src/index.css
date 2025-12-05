@@ -1,5 +1,5 @@
 /* Citation for use of AI Tools:
-Date: 12/02/2022
+Date: 12/02/2025
       Prompts used to generate CSS
       can you write me CSS to style my form elements.
        I want the inputs to be listed vertically in a box in the center of the screen. 
@@ -303,5 +303,52 @@ h1 {
 }
 
 .table-container table thead th {
+    text-align: center;
+}
+
+.transfusion-image {
+    display: block;
+    margin: 30px auto 0 auto;
+    /* centers the image */
+    width: 380px;
+    /* make it smaller — adjust as needed */
+    height: auto;
+    /* keeps correct proportions */
+    border-radius: 10px;
+    /* optional: rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* optional: slight shadow */
+}
+
+.website-description {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.home-description {
+    max-width: 800px;
+    /* limits the width so it wraps */
+    margin: 0 auto;
+    /* centers it */
+    text-align: center;
+    /* keeps centered text */
+    font-size: 1.1rem;
+    line-height: 1.6;
+    padding: 10px 20px;
+}
+
+.home-header {
+    background-color: #a41717;
+    /* softer red than navbar */
+    color: white;
+    padding: 12px 24px;
+    /* smaller padding so the box hugs text */
+    margin: 30px auto 20px auto;
+    width: fit-content;
+    /* makes the box wrap tightly around the text */
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    font-size: 1.8rem;
+    letter-spacing: 0.5px;
     text-align: center;
 }

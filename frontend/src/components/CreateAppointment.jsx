@@ -65,9 +65,10 @@ function CreateAppointment({ backendURL }) {
 
     // if no blood orders availble for patient, redirect to create a new order 
     if (orders.length === 0) {
-      alert(`No blood orders available for this patient, please create a new blood
-            order before creating an appointment. Appointment details will not be saved.
-            Click OK to be redirected to create a new blood order.`)
+      alert(`No blood orders available for this patient.
+        Create a new blood order before creating an appointment. 
+        Appointment details will not be saved.
+        Click OK to be redirected to create a new blood order.`)
 
       navigate("/bloodorder/new")
       return
