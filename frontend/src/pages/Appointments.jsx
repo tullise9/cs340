@@ -7,8 +7,11 @@ import { useState, useEffect } from "react";
 import TableRow from "../components/TableRow";
 
 function Appointments({ backendURL }) {
+
+    //state variable and function for loading appointment table data
     const [appointments, setAppointments] = useState([])
 
+    //loads appointment table after component mounts
     useEffect(() => {
         async function loadAppointments() {
             try {

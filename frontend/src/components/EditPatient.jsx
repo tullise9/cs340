@@ -9,8 +9,9 @@ import { useNavigate } from "react-router-dom"
 function EditPatient({ backendURL }) {
 
     const navigate = useNavigate()
-    const { patientId } = useParams()
 
+    //state variables and functions for prepopulating form data
+    const { patientId } = useParams()
     const [ID, setID] = useState("")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
@@ -18,6 +19,7 @@ function EditPatient({ backendURL }) {
     const [weight, setWeight] = useState("")
     const [DOB, setDOB] = useState("")
 
+    //prepopulates form with original patient data
     useEffect(() => {
         async function loadPatient() {
             try {
@@ -39,6 +41,7 @@ function EditPatient({ backendURL }) {
         loadPatient()
     }, [patientId, backendURL])
 
+    //sends updated data to backend for storage 
     async function handleSubmit(e) {
         e.preventDefault()
         console.log("PUT URL: ", `${backendURL}/patients/${patientId}`)
@@ -64,36 +67,37 @@ function EditPatient({ backendURL }) {
         }
     }
 
+    // naviagtes back to patients page upon canceling action
     function handleCancel() {
         navigate("/Patients")
     }
 
     return (
         <>
-         <div className="form-container">
-            <h1>Edit Patient </h1>
-            <form onSubmit={handleSubmit}>
-                <label>Patient ID:</label>
-                <input value={ID} onChange={(e) => setID(e.target.value)} />
+            <div className="form-container">
+                <h1>Edit Patient </h1>
+                <form onSubmit={handleSubmit}>
+                    <label>Patient ID:</label>
+                    <input value={ID} onChange={(e) => setID(e.target.value)} />
 
-                <label>First Name:</label>
-                <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                    <label>First Name:</label>
+                    <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
 
-                <label>Last Name:</label>
-                <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                    <label>Last Name:</label>
+                    <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
 
-                <label>Phone Number:</label>
-                <input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+                    <label>Phone Number:</label>
+                    <input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
 
-                <label>Weight:</label>
-                <input value={weight} onChange={(e) => setWeight(e.target.value)} />
+                    <label>Weight:</label>
+                    <input value={weight} onChange={(e) => setWeight(e.target.value)} />
 
-                <label>Date of Birth:</label>
-                <input type="date" value={DOB} onChange={(e) => setDOB(e.target.value)} />
+                    <label>Date of Birth:</label>
+                    <input type="date" value={DOB} onChange={(e) => setDOB(e.target.value)} />
 
-                <button type="submit">Save</button>
-                <button type="button" onClick={handleCancel}>Cancel</button>
-            </form>
+                    <button type="submit">Save</button>
+                    <button type="button" onClick={handleCancel}>Cancel</button>
+                </form>
             </div>
         </>
     )

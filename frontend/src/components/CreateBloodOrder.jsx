@@ -8,11 +8,13 @@ import { useNavigate } from "react-router-dom"
 function CreateBloodOrder({ backendURL }) {
     const navigate = useNavigate()
 
+    //state variables for setting patient data for new blood order
     const [patientId, setPatientId] = useState("")
     const [dateTime, setDateTime] = useState("")
     const [volume, setVolume] = useState("")
     const [patients, setPatients] = useState([])
 
+    //loads patients names to dropdown menu after component mounts
     useEffect(() => {
         async function loadPatients() {
             try {
@@ -28,6 +30,7 @@ function CreateBloodOrder({ backendURL }) {
         loadPatients()
     }, [backendURL])
 
+    //sends new blood order data to backend for storage
     async function handleSubmit(e) {
         e.preventDefault()
 
@@ -49,44 +52,45 @@ function CreateBloodOrder({ backendURL }) {
         }
     }
 
+    //navigates back to blood orders page if action is canceled
     function handleCancel() {
         navigate("/BloodOrders")
     }
 
     return (
         <>
-        <div className="form-container">
-            <h1>Blood Order Form</h1>
-            
-            <form onSubmit={handleSubmit}>
-                <label>Patient:</label>
-                <select value={patientId} onChange={(e) => setPatientId(e.target.value)}>
-                    <option value="">Select</option>
-                    {patients.map(p => (
-                        <option key={p.patientID} value={p.patientID}>
-                            {p.firstName} {p.lastName}
-                        </option>
-                    ))}
-                </select>
+            <div className="form-container">
+                <h1>Blood Order Form</h1>
 
-                <label>Date and Time:</label>
-                <input
-                    type="datetime-local"
-                    value={dateTime}
-                    onChange={(e) => setDateTime(e.target.value)}
-                />
+                <form onSubmit={handleSubmit}>
+                    <label>Patient:</label>
+                    <select value={patientId} onChange={(e) => setPatientId(e.target.value)}>
+                        <option value="">Select</option>
+                        {patients.map(p => (
+                            <option key={p.patientID} value={p.patientID}>
+                                {p.firstName} {p.lastName}
+                            </option>
+                        ))}
+                    </select>
 
-                <label>Volume (mL):</label>
-                <input
-                    type="number"
-                    value={volume}
-                    onChange={(e) => setVolume(e.target.value)}
-                />
+                    <label>Date and Time:</label>
+                    <input
+                        type="datetime-local"
+                        value={dateTime}
+                        onChange={(e) => setDateTime(e.target.value)}
+                    />
 
-                <button type="submit">Save</button>
-                <button type="button" onClick={handleCancel}>Cancel</button>
-            </form>
-        </div>
+                    <label>Volume (mL):</label>
+                    <input
+                        type="number"
+                        value={volume}
+                        onChange={(e) => setVolume(e.target.value)}
+                    />
+
+                    <button type="submit">Save</button>
+                    <button type="button" onClick={handleCancel}>Cancel</button>
+                </form>
+            </div>
         </>
     )
 }

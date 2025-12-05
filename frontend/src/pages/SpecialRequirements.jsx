@@ -7,8 +7,11 @@ import TableRow from "../components/TableRow"
 import { Link } from "react-router-dom"
 
 function SpecialRequirements({ backendURL }) {
+
+    //state variable and function for loading special requirements page
     const [requirements, setRequirements] = useState([])
 
+    //loads special requirments table after component mounts
     useEffect(() => {
         async function loadRequirements() {
             try {
@@ -25,35 +28,35 @@ function SpecialRequirements({ backendURL }) {
 
     return (
         <>
-        <div className="table-container">
-            <h1>Special Requirements</h1>
-            <div className="homepageDescription">
-            </div>
+            <div className="table-container">
+                <h1>Special Requirements</h1>
+                <div className="homepageDescription">
+                </div>
 
-            <div className="table-wrapper">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Requirement ID</th>
-                        <th>Name</th>
-                        <th>Details</th>
-                    </tr>
-                </thead>
+                <div className="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Requirement ID</th>
+                                <th>Name</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
 
-                <tbody>
-                    {requirements.map(r => (
-                        <TableRow
-                            key={r.requirementID}
-                            columns={[
-                                r.requirementID,
-                                r.requirementName,
-                                r.requirementDescription
-                            ]}
-                        />
-                    ))}
-                </tbody>
-            </table>
-            </div>
+                        <tbody>
+                            {requirements.map(r => (
+                                <TableRow
+                                    key={r.requirementID}
+                                    columns={[
+                                        r.requirementID,
+                                        r.requirementName,
+                                        r.requirementDescription
+                                    ]}
+                                />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </>
     )

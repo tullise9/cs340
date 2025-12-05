@@ -7,11 +7,15 @@ import { useState, useEffect } from "react"
 import { Link, useParams } from "react-router-dom"
 
 function PatientsBloodRequirements({ backendURL }) {
-    const { patientId } = useParams()  
 
+    //gets patientId from URL parameters
+    const { patientId } = useParams()
+
+    //state variables and function for setting patient name and requirements table 
     const [chosenPatient, setChosenPatient] = useState(patientId || "")
     const [requirements, setRequirements] = useState([])
 
+    //loads patient requirements when patiebt us chosen 
     useEffect(() => {
         async function loadRequirements() {
             if (!chosenPatient) return
@@ -28,6 +32,7 @@ function PatientsBloodRequirements({ backendURL }) {
         loadRequirements()
     }, [chosenPatient, backendURL])
 
+    //sets patientId to load patient name on patients requirements page
     useEffect(() => {
 
         if (patientId) {
@@ -35,6 +40,7 @@ function PatientsBloodRequirements({ backendURL }) {
         }
     }, [patientId])
 
+    //sends delete request to backend when special requirement is deleted
     async function handleDelete(requirementID) {
         try {
             await fetch(`${backendURL}/requirements/${chosenPatient}/${requirementID}`, {
@@ -57,43 +63,43 @@ function PatientsBloodRequirements({ backendURL }) {
 
             {chosenPatient && requirements.length > 0 && (
                 <>
-                <div className="table-container">
-                    <Link to={`/requirements/new/${chosenPatient}`} className="bb-btn">
-                        New Requirement
-                    </Link>
+                    <div className="table-container">
+                        <Link to={`/requirements/new/${chosenPatient}`} className="bb-btn">
+                            New Requirement
+                        </Link>
 
-                    <h2 className="table-title">
-                        {requirements[0].firstName} {requirements[0].lastName}
-                    </h2>
+                        <h2 className="table-title">
+                            {requirements[0].firstName} {requirements[0].lastName}
+                        </h2>
 
-                    <div className="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Requirement ID</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
+                        <div className="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Requirement ID</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
 
-                        <tbody>
-                            {requirements.map(req => (
-                                <tr key={req.requirementID}>
-                                    <td>{req.requirementID}</td>
-                                    <td>{req.requirementName}</td>
-                                    <td>{req.requirementDescription}</td>
-                                    <td>
-                                        <button onClick={() => handleDelete(req.requirementID)}>
-                                            Delete
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                                <tbody>
+                                    {requirements.map(req => (
+                                        <tr key={req.requirementID}>
+                                            <td>{req.requirementID}</td>
+                                            <td>{req.requirementName}</td>
+                                            <td>{req.requirementDescription}</td>
+                                            <td>
+                                                <button onClick={() => handleDelete(req.requirementID)}>
+                                                    Delete
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
                 </>
             )}
 

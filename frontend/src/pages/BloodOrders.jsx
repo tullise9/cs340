@@ -7,8 +7,11 @@ import TableRow from "../components/TableRow"
 import { Link } from "react-router-dom"
 
 function BloodOrders({ backendURL }) {
+
+    //state variable and function for loading blood orders table
     const [orders, setOrders] = useState([])
 
+    //loads blood order table after component mounts
     useEffect(() => {
         async function loadOrders() {
             try {

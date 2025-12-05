@@ -4,24 +4,28 @@
 
 import { useState, useEffect } from "react"
 function ChoosePatient({ backendURL, onSelect }) {
+
+    //state variables and functions for loading dropdown menu and setting selected patient
     const [selectedPatient, setSelectedPatient] = useState("")
     const [patients, setPatients] = useState([])
 
-    useEffect(()=> {
+    // loads patient names to dropdown menu after component mounts
+    useEffect(() => {
         async function fetchPatients() {
-            try{
+            try {
                 const response = await fetch(backendURL + "/patients")
                 const data = await response.json()
                 setPatients(data)
-            } catch(err){
+            } catch (err) {
                 console.error("Error fetching patients: ", err)
             }
-            
+
         }
         fetchPatients()
     }, [backendURL])
 
 
+    // sets selected patientId when form is submitted
     const handleSubmit = (e) => {
         e.preventDefault()
         if (selectedPatient) {
@@ -32,18 +36,18 @@ function ChoosePatient({ backendURL, onSelect }) {
 
     return (
         <>
-        <div className="form-container">
-            <h2>Select a patient to continue</h2>
+            <div className="form-container">
+                <h2>Select a patient to continue</h2>
 
-            <form onSubmit={handleSubmit}>
-                <select value={selectedPatient} onChange={(e) => setSelectedPatient(e.target.value)}>
-                    <option value="">--Select--</option>
-                    {patients.map((p) => (
-                        <option key={p.patientID} value={p.patientID}> {p.firstName} {p.lastName} </option>
-                    ))}
-                </select>
-                <button type="submit">Continue</button>
-            </form>
+                <form onSubmit={handleSubmit}>
+                    <select value={selectedPatient} onChange={(e) => setSelectedPatient(e.target.value)}>
+                        <option value="">--Select--</option>
+                        {patients.map((p) => (
+                            <option key={p.patientID} value={p.patientID}> {p.firstName} {p.lastName} </option>
+                        ))}
+                    </select>
+                    <button type="submit">Continue</button>
+                </form>
 
             </div>
         </>

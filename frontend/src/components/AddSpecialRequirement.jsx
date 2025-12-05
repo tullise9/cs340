@@ -6,13 +6,18 @@ import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 
 function AddSpecialRequirement({ backendURL }) {
+
+    // get patientId from URL
     const { patientId } = useParams()
+
     const navigate = useNavigate()
 
+    //state varuables and functions for loading and setting data
     const [patient, setPatient] = useState({})
     const [requirementId, setRequirementId] = useState("")
     const [requirements, setRequirements] = useState([])
 
+    //used to load patient name and blood requirements after component mounts
     useEffect(() => {
         async function loadPatient() {
             try {
@@ -38,6 +43,7 @@ function AddSpecialRequirement({ backendURL }) {
         loadRequirements()
     }, [patientId, backendURL])
 
+    //sends data to backend for storage
     async function handleSubmit(e) {
         e.preventDefault()
 
@@ -46,9 +52,9 @@ function AddSpecialRequirement({ backendURL }) {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                requirementID: Number(requirementId)
-             })
-        })
+                    requirementID: Number(requirementId)
+                })
+            })
 
 
             navigate(`/PatientsBloodRequirements/${patientId}`)
@@ -58,6 +64,7 @@ function AddSpecialRequirement({ backendURL }) {
         }
     }
 
+    // naviagtes to current patient blood requriements upon canceling action
     function handleCancel() {
         navigate("/PatientsBloodRequirements")
     }

@@ -4,11 +4,13 @@
 // Source URL: https://canvas.oregonstate.edu/courses/2017561/pages/exploration-web-application-technology-2?module_item_id=25645131
 import { useState, useEffect } from "react"
 import TableRow from "../components/TableRow"
-import { Link } from "react-router-dom"
 
 function Nurses({ backendURL }) {
+
+    //sate variable and function for loading nurses table
     const [nurses, setNurses] = useState([])
 
+    //loads nurse table data after component mounts
     useEffect(() => {
         async function loadNurses() {
             try {
