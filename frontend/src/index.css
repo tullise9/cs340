@@ -1,51 +1,63 @@
+/* Citation for use of AI Tools:
+Date: 12/02/2022
+      Prompts used to generate CSS
+      can you write me CSS to style my form elements.
+       I want the inputs to be listed vertically in a box in the center of the screen. 
+       I want the input boxes to be aligned with the left side of the box. My theme is blood banking so can you add some red elements,
+       not too bright of a red though, maybe more of a deep red.
+       can you write CSS so my tables will appear those same nice colors?
+       AI Source URL: https://chatgpt.com/share/6931e383-6644-800d-a54f-31795f83fe3c
+Links to an external site. 
+*/
+
 h1,
 h2 {
-  margin-left: 16px;
+    margin-left: 16px;
 }
 
 table {
-  border-collapse: collapse;
-  margin-left: 32px;
+    border-collapse: collapse;
+    margin-left: 32px;
 }
 
 th,
 td {
-  border: 1px solid #ddd;
-  padding: 12px;
-  text-align: center;
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
 }
 
 th {
-  background-color: #f2f2f2;
+    background-color: #f2f2f2;
 }
 
 
 
 tr:nth-child(even) {
-  background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
 
 .cuForm {
-  margin-left: 32px;
+    margin-left: 32px;
 }
 
 input,
 select {
-  margin-bottom: 4px;
-  margin-right: 12px;
+    margin-bottom: 4px;
+    margin-right: 12px;
 }
 
 nav {
-  background-color: #cecece;
-  padding: 16px;
+    background-color: #cecece;
+    padding: 16px;
 }
 
 a {
-  margin-left: 16px;
+    margin-left: 16px;
 }
 
 .homepageDescription {
-  margin-left: 32px;
+    margin-left: 32px;
 }
 
 /* Center the form container on the page */
@@ -53,9 +65,11 @@ a {
     width: 420px;
     margin: 80px auto;
     padding: 25px;
-    border: 2px solid #8B0000;       /* deep red border */
+    border: 2px solid #8B0000;
+    /* deep red border */
     border-radius: 10px;
-    background-color: #fffafa;       /* very light red-tinted background */
+    background-color: #fffafa;
+    /* very light red-tinted background */
     box-shadow: 0 4px 12px rgba(139, 0, 0, 0.15);
 }
 
@@ -69,7 +83,8 @@ a {
 /* Labels */
 .form-container label {
     font-weight: 600;
-    color: #8B0000;                  /* deep red text */
+    color: #8B0000;
+    /* deep red text */
 }
 
 /* Inputs */
@@ -78,7 +93,8 @@ a {
 .form-container textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid #b36b6b;        /* muted warm border */
+    border: 1px solid #b36b6b;
+    /* muted warm border */
     border-radius: 6px;
     font-size: 16px;
     background-color: #fff;
@@ -91,13 +107,15 @@ a {
     border-radius: 6px;
     cursor: pointer;
     font-size: 18px;
-    background-color: #8B0000;        /* deep red */
+    background-color: #8B0000;
+    /* deep red */
     color: white;
     transition: background-color 0.25s ease;
 }
 
 .form-container button:hover {
-    background-color: #6e0000;       /* darker hover shade */
+    background-color: #6e0000;
+    /* darker hover shade */
 }
 
 /* Table container to center and style */
@@ -106,16 +124,19 @@ a {
     max-width: 900px;
     margin: 40px auto;
     padding: 20px;
-    background-color: #fffafa; /* light blush */
-    border: 2px solid #8B0000; /* deep red border */
+    background-color: #fffafa;
+    /* light blush */
+    border: 2px solid #8B0000;
+    /* deep red border */
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.15);  
+    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.15);
 }
 
 .table-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: center;     /* centers children including title and table */
+    align-items: center;
+    /* centers children including title and table */
     margin-top: 20px;
 }
 
@@ -124,7 +145,8 @@ a {
     margin-bottom: 15px;
     font-size: 26px;
     font-weight: 700;
-    color: #000000;          /* deep blood red theme */
+    color: #000000;
+    /* deep blood red theme */
 }
 
 .table-wrapper table {
@@ -133,8 +155,10 @@ a {
 
 
 table thead {
-    background-color: #c44545;   /* lighter muted blood red */
-    color: #000000;              /* black text */
+    background-color: #c44545;
+    /* lighter muted blood red */
+    color: #000000;
+    /* black text */
 }
 
 table thead th {
@@ -147,28 +171,33 @@ table thead th {
 
 /* Improve alternating row colors for visibility */
 table tbody tr:nth-child(even) {
-    background-color: #fdecec;     /* slightly darker blush tone */
+    background-color: #fdecec;
+    /* slightly darker blush tone */
 }
 
 table tbody tr:hover {
-    background-color: #f8d4d4;     /* darker hover contrast */
+    background-color: #f8d4d4;
+    /* darker hover contrast */
 }
 
 /* Body cells */
 table tbody td {
     padding: 12px;
-    border-bottom: 1px solid #b36b6b;  /* muted warm border */
+    border-bottom: 1px solid #b36b6b;
+    /* muted warm border */
 }
 
 /* Row hover effect */
 table tbody tr:hover {
-    background-color: #f3e4e4;  /* soft red tint */
+    background-color: #f3e4e4;
+    /* soft red tint */
     cursor: pointer;
 }
 
 /* Alternate row shading for readability */
 table tbody tr:nth-child(even) {
-    background-color: #fff1f1;  /* very light blush */
+    background-color: #fff1f1;
+    /* very light blush */
 }
 
 /* Editable buttons */
@@ -184,25 +213,30 @@ table tbody tr:nth-child(even) {
 }
 
 .table-btn:hover {
-    background-color: #6e0000;  /* darker hover */
+    background-color: #6e0000;
+    /* darker hover */
 }
 
 /* Navigation bar container */
 nav {
-    background-color: #8B0000;        /* deep red */
+    background-color: #8B0000;
+    /* deep red */
     padding: 12px 20px;
     border-bottom: 2px solid #6e0000;
     box-shadow: 0 3px 6px rgba(139, 0, 0, 0.25);
 
     display: flex;
-    justify-content: center;          /* centers items horizontally */
+    justify-content: center;
+    /* centers items horizontally */
     align-items: center;
 }
 
 /* Navigation links */
 nav a {
-    color: #ffffff;                   /* white text */
-    margin: 0 18px;                   /* spacing around links */
+    color: #ffffff;
+    /* white text */
+    margin: 0 18px;
+    /* spacing around links */
     text-decoration: none;
     font-weight: 600;
     font-size: 18px;
@@ -213,13 +247,16 @@ nav a {
 
 /* Hover effect */
 nav a:hover {
-    background-color: #c44545;        /* lighter red */
-    color: #000000;                   /* black text on hover */
+    background-color: #c44545;
+    /* lighter red */
+    color: #000000;
+    /* black text on hover */
 }
 
 /* Optional active page indicator */
 nav a.active {
-    background-color: #fffafa;        /* soft blush */
+    background-color: #fffafa;
+    /* soft blush */
     color: #8B0000;
     font-weight: 700;
 }
@@ -242,7 +279,8 @@ h1 {
     display: inline-block;
     transition: background-color 0.25s ease, transform 0.2s ease;
 
-    outline: none;  /* ADDED */
+    outline: none;
+    /* ADDED */
 }
 
 .bb-btn:hover {
@@ -256,7 +294,8 @@ h1 {
 }
 
 .bb-btn:focus {
-    outline: none; /* ADDED */
+    outline: none;
+    /* ADDED */
 }
 
 .center-h2 {
@@ -266,6 +305,3 @@ h1 {
 .table-container table thead th {
     text-align: center;
 }
-
-
-

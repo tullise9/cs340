@@ -27,8 +27,8 @@ import EditPatient from './components/EditPatient';
 
 // Define the backend port and URL for API requests
 const backendPort = 6391;  // Use the port you assigned to the backend server, this would normally go in a .env file
-const backendURL = `http://localhost:${backendPort}`;
-//const backendURL = `http://classwork.engr.oregonstate.edu:${backendPort}`;
+//const backendURL = `http://localhost:${backendPort}`;
+const backendURL = `http://classwork.engr.oregonstate.edu:${backendPort}`;
 
 function App() {
   const navigate = useNavigate()
