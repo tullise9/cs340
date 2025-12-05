@@ -2,23 +2,25 @@
 // Date: 11/05/2025
 // Copied from /OR/ Adapted from /OR/ Based on:
 // Source URL: https://canvas.oregonstate.edu/courses/2017561/pages/exploration-web-application-technology-2?module_item_id=25645131
+
 import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 
 function CreateAppointment({ backendURL }) {
   const navigate = useNavigate()
-  const { patientId } = useParams()
 
+  //state variables and functions for setting information 
+  const { patientId } = useParams()
   const [patient, setPatient] = useState("")
   const [dateTime, setDateTime] = useState("")
   const [orderID, setOrderID] = useState("")
   const [nurseID, setNurseID] = useState("")
   const [isConfirmed, setIsConfirmed] = useState(0)
-
   const [orders, setOrders] = useState([])
   const [nurses, setNurses] = useState([])
 
+  // used to select patientId for loading availble blood orders
   useEffect(() => {
     async function loadPatient() {
       try {
@@ -30,6 +32,7 @@ function CreateAppointment({ backendURL }) {
       }
     }
 
+    //loads available blod orders in drop down menu 
     async function loadAvailableOrders() {
       try {
         const response = await fetch(`${backendURL}/orders/available/${patientId}`)
@@ -40,6 +43,7 @@ function CreateAppointment({ backendURL }) {
       }
     }
 
+    // loads nurse names in dropdown menu 
     async function loadNurses() {
       try {
         const response = await fetch(`${backendURL}/nurses`)
@@ -55,8 +59,19 @@ function CreateAppointment({ backendURL }) {
     loadNurses()
   }, [patientId, backendURL])
 
+  // send data to backend for storage 
   async function handleSubmit(e) {
     e.preventDefault()
+
+    // if no blood orders availble for patient, redirect to create a new order 
+    if (orders.length === 0) {
+      alert(`No blood orders available for this patient, please create a new blood
+            order before creating an appointment. Appointment details will not be saved.
+            Click OK to be redirected to create a new blood order.`)
+
+      navigate("/bloodorder/new")
+      return
+    }
     try {
       await fetch(`${backendURL}/appointments`, {
         method: "POST",
@@ -77,6 +92,7 @@ function CreateAppointment({ backendURL }) {
     }
   }
 
+  //naviagte back to Appointments page if action is canceled
   function handleCancel() {
     navigate("/Appointments")
   }
